@@ -112,4 +112,74 @@ print("Average of normalized-losses:", avg_norm_loss)
 # Replace "NaN" by mean value in "normalized-losses" column
 df["normalized-losses"].replace(np.nan, avg_norm_loss, inplace=True)
 
+avg_bore=df['bore'].astype('float').mean(axis=0)
+print("Average of bore:", avg_bore)
+df["bore"].replace(np.nan, avg_bore, inplace=True)
+#According to the example above, replace NaN in "stroke" column by mean.
+avg_stroke=df['stroke'].astype('float').mean(axis=0)
+print("Average of stroke:", avg_stroke)
+df["stroke"].replace(np.nan, avg_stroke, inplace=True)
+
+avg_horsepower = df['horsepower'].astype('float').mean(axis=0)
+print("Average horsepower:", avg_horsepower)
+df['horsepower'].replace(np.nan, avg_horsepower, inplace=True)
+
+avg_peakrpm=df['peak-rpm'].astype('float').mean(axis=0)
+print("Average peak rpm:", avg_peakrpm)
+df['peak-rpm'].replace(np.nan, avg_peakrpm, inplace=True)
+
+#   To see which values are present in a particular column, we can use the ".value_counts()" method:
+df['num-of-doors'].value_counts()
+# We can see that four doors are the most common type. We can also use the ".idxmax()" method to calculate for us the most common type automatically:
+df['num-of-doors'].value_counts().idxmax()
+#replace the missing 'num-of-doors' values by the most frequent 
+df["num-of-doors"].replace(np.nan, "four", inplace=True)
+
+# simply drop whole row with NaN in "price" column
+df.dropna(subset=["price"], axis=0, inplace=True)
+
+# reset index, because we droped two rows
+df.reset_index(drop=True, inplace=True)
+
+#Good! Now, we obtain the dataset with no missing values.
+
+"""
+#################   Correct data format
+The last step in data cleaning is checking and making sure that all data is in the correct format (int, float, text or other).
+In Pandas, we use
+    .dtype() to check the data type
+    .astype() to change the data type
+"""
+df.dtypes
+
+df[["bore", "stroke"]] = df[["bore", "stroke"]].astype("float")
+df[["normalized-losses"]] = df[["normalized-losses"]].astype("int")
+df[["price"]] = df[["price"]].astype("float")
+df[["peak-rpm"]] = df[["peak-rpm"]].astype("float")
+
+"""#################   Data Standardization"""
+#The formula for unit conversion is
+# L/100km = 235 / mpg
+# Convert mpg to L/100km by mathematical operation (235 divided by mpg)
+df['city-L/100km'] = 235/df["city-mpg"]
+# transform mpg to L/100km by mathematical operation (235 divided by mpg)
+df["highway-mpg"] = 235/df["highway-mpg"]
+
+# rename column name from "highway-mpg" to "highway-L/100km"
+df.rename(columns={'highway-mpg':'highway-L/100km'}, inplace=True)
+# check your transformed data 
+df[["city-L/100km","highway-L/100km"]].head()
+
+"""################     Data Normalization"""
+# replace (original value) by (original value)/(maximum value)
+df['length'] = df['length']/df['length'].max()
+df['width'] = df['width']/df['width'].max()
+df['height'] = df['height']/df['height'].max() 
+# show the scaled columns
+df[["length","width","height"]].head()
+
+
+
+
+
 

@@ -170,6 +170,16 @@ df.rename(columns={'highway-mpg':'highway-L/100km'}, inplace=True)
 # check your transformed data 
 df[["city-L/100km","highway-L/100km"]].head()
 
+"""
+
+Consider the column of the dataframe df['a']. The colunm has been standardized.
+ What is the standard deviation of the values, i.e the result of applying the following operation df['a'].std() :
+Answer = 1     
+"""
+test_ahmed = df['highway-L/100km'].std()
+
+
+
 """################     Data Normalization"""
 # replace (original value) by (original value)/(maximum value)
 df['length'] = df['length']/df['length'].max()
@@ -177,6 +187,31 @@ df['width'] = df['width']/df['width'].max()
 df['height'] = df['height']/df['height'].max() 
 # show the scaled columns
 df[["length","width","height"]].head()
+
+"""################  Binning"""
+
+df["horsepower"]=df["horsepower"].astype(int, copy=True)
+import matplotlib as plt
+from matplotlib import pyplot
+plt.pyplot.hist(df["horsepower"])
+
+# set x/y labels and plot title
+plt.pyplot.xlabel("horsepower")
+plt.pyplot.ylabel("count")
+plt.pyplot.title("horsepower bins")
+
+bins = np.linspace(min(df["horsepower"]), max(df["horsepower"]), 4)
+bins
+group_names = ['Low', 'Medium', 'High']
+
+df['horsepower-binned'] = pd.cut(df['horsepower'], bins, labels=group_names, include_lowest=True )
+df[['horsepower','horsepower-binned']].head(20)
+
+# Lets see the number of vehicles in each bin.
+df["horsepower-binned"].value_counts()
+
+# Lets plot the distribution of each bin.
+
 
 
 

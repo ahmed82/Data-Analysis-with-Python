@@ -20,7 +20,7 @@ headers = ["symboling","normalized-losses","make","fuel-type","aspiration", "num
          "drive-wheels","engine-location","wheel-base", "length","width","height","curb-weight","engine-type",
          "num-of-cylinders", "engine-size","fuel-system","bore","stroke","compression-ratio","horsepower",
          "peak-rpm","city-mpg","highway-mpg","price"]
-
+#Use the Pandas method read_csv() to load the data from the web address. Set the parameter  "names" equal to the Python list "headers".
 df = pd.read_csv(filename, names = headers)
 
 # To see what the data set looks like, we'll use the head() method.
@@ -38,8 +38,8 @@ Steps for working with missing data:
     2. deal with missing data
     3. correct data format
     
-Identify and handle missing values
-Identify missing values
+#############   Identify and handle missing values ###############
+                    Identify missing values
 Convert "?" to NaN
 In the car dataset, missing data comes with the question mark "?". We replace "?" with NaN (Not a Number), 
 which is Python's default missing value marker, for reasons of computational speed and convenience. 
@@ -52,4 +52,64 @@ import numpy as np
 # replace "?" to NaN
 df.replace("?", np.nan, inplace = True)
 df.head(5)
+
+
+"""
+#############   Evaluating for Missing Data ################
+The missing values are converted to Python's default. We use Python's built-in functions to identify these missing values. There are two methods to detect missing data:
+
+    .isnull()
+    .notnull()
+The output is a boolean value indicating whether the value that is passed into the argument is in fact missing data.
+"""
+missing_data = df.isnull()
+missing_data.head(5)
+# "True" stands for missing value, while "False" stands for not missing value.
+
+"""
+#############   Count missing values in each column 
+Using a for loop in Python, we can quickly figure out the number of missing values in each column. 
+As mentioned above, "True" represents a missing value, "False" means the value is present in the dataset.
+ In the body of the for loop the method ".value_counts()" counts the number of "True" values.
+"""
+for column in missing_data.columns.values.tolist():
+    print(column)
+    print (missing_data[column].value_counts())
+    print("")
+""""
+Deal with missing data
+How to deal with missing data?
+drop data
+    a. drop the whole row
+    b. drop the whole column
+replace data
+    a. replace it by mean
+    b. replace it by frequency
+    c. replace it based on other functions
+Whole columns should be dropped only if most entries in the column are empty. In our dataset, none of the columns are empty enough to drop entirely. We have some freedom in choosing which method to replace data; however, some methods may seem more reasonable than others. We will apply each method to many different columns:
+
+        Replace by mean:
+
+"normalized-losses": 41 missing data, replace them with mean
+"stroke": 4 missing data, replace them with mean
+"bore": 4 missing data, replace them with mean
+"horsepower": 2 missing data, replace them with mean
+"peak-rpm": 2 missing data, replace them with mean
+        Replace by frequency:
+
+"num-of-doors": 2 missing data, replace them with "four".
+Reason: 84% sedans is four doors. Since four doors is most frequent, it is most likely to occur
+        Drop the whole row:
+
+"price": 4 missing data, simply delete the whole row
+Reason: price is what we want to predict. Any data entry without price data cannot be used for prediction; therefore any row now without price data is not useful to us
+Calculate the average of the column 
+""""
+
+
+avg_norm_loss = df["normalized-losses"].astype("float").mean(axis=0)
+print("Average of normalized-losses:", avg_norm_loss)
+# Replace "NaN" by mean value in "normalized-losses" column
+df["normalized-losses"].replace(np.nan, avg_norm_loss, inplace=True)
+
 

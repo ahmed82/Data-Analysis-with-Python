@@ -122,4 +122,23 @@ Now, it provides the statistical summary of all the columns, including object-ty
 We can now see how many unique values, which is the top value and the frequency of top value in the object-typed columns.
 Some values in the table above show as "NaN", this is because those numbers are not available regarding a particular column type.
 """
+"""
+You can select the columns of a data frame by indicating the name of  each column, 
+for example, you can select the three columns as follows:
+"""
+dataframe[[' column 1 ',column 2', 'column 3']]
 
+"""
+Where "column" is the name of the column, you can apply the method  ".describe()" 
+to get the statistics of those columns as follows:
+"""
+df[['length', 'compression-ratio']].describe()
+
+#Info
+"""Another method you can use to check your dataset is:"""
+dataframe.info
+dataframe.info
+#It provide a concise summary of your DataFrame.
+
+# look at the info of "df"
+df.info

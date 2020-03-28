@@ -211,10 +211,31 @@ df[['horsepower','horsepower-binned']].head(20)
 df["horsepower-binned"].value_counts()
 
 # Lets plot the distribution of each bin.
+# %matplotlib inline
+import matplotlib as plt
+from matplotlib import pyplot
+pyplot.bar(group_names, df["horsepower-binned"].value_counts())
 
+# set x/y labels and plot title
+plt.pyplot.xlabel("horsepower")
+plt.pyplot.ylabel("count")
+plt.pyplot.title("horsepower bins")
 
+"""########################  Bins visualization """
+#Normally, a histogram is used to visualize the distribution of bins we created above.
+# %matplotlib inline
+import matplotlib as plt
+from matplotlib import pyplot
 
+a = (0,1,2)
 
+# draw historgram of attribute "horsepower" with bins = 3
+plt.pyplot.hist(df["horsepower"], bins = 3)
+
+# set x/y labels and plot title
+plt.pyplot.xlabel("horsepower")
+plt.pyplot.ylabel("count")
+plt.pyplot.title("horsepower bins")
 
 
 

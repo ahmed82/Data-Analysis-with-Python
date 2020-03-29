@@ -104,7 +104,7 @@ Reason: 84% sedans is four doors. Since four doors is most frequent, it is most 
 "price": 4 missing data, simply delete the whole row
 Reason: price is what we want to predict. Any data entry without price data cannot be used for prediction; therefore any row now without price data is not useful to us
 Calculate the average of the column 
-""""
+"""
 
 
 avg_norm_loss = df["normalized-losses"].astype("float").mean(axis=0)
@@ -212,8 +212,8 @@ df["horsepower-binned"].value_counts()
 
 # Lets plot the distribution of each bin.
 # %matplotlib inline
-import matplotlib as plt
-from matplotlib import pyplot
+#import matplotlib as plt
+#from matplotlib import pyplot
 pyplot.bar(group_names, df["horsepower-binned"].value_counts())
 
 # set x/y labels and plot title
@@ -272,6 +272,15 @@ dummy_variable_2.rename(columns={'std':'aspiration-std', 'turbo': 'aspiration-tu
 # show first 5 instances of data frame "dummy_variable_1"
 dummy_variable_2.head()
 
+"""
+Merge the new dataframe to the original dataframe then drop the column 'aspiration'
+"""
+#merge the new dataframe to the original datafram
+df = pd.concat([df, dummy_variable_2], axis=1)
+
+# drop original column "aspiration" from "df"
+df.drop('aspiration', axis = 1, inplace=True)
 
 
+df.to_csv('C:\clean_df.csv')
 

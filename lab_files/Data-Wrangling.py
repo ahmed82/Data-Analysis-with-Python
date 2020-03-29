@@ -170,6 +170,16 @@ df.rename(columns={'highway-mpg':'highway-L/100km'}, inplace=True)
 # check your transformed data 
 df[["city-L/100km","highway-L/100km"]].head()
 
+"""
+
+Consider the column of the dataframe df['a']. The colunm has been standardized.
+ What is the standard deviation of the values, i.e the result of applying the following operation df['a'].std() :
+Answer = 1     
+"""
+test_ahmed = df['highway-L/100km'].std()
+
+
+
 """################     Data Normalization"""
 # replace (original value) by (original value)/(maximum value)
 df['length'] = df['length']/df['length'].max()
@@ -178,7 +188,89 @@ df['height'] = df['height']/df['height'].max()
 # show the scaled columns
 df[["length","width","height"]].head()
 
+"""################  Binning"""
 
+df["horsepower"]=df["horsepower"].astype(int, copy=True)
+import matplotlib as plt
+from matplotlib import pyplot
+plt.pyplot.hist(df["horsepower"])
+
+# set x/y labels and plot title
+plt.pyplot.xlabel("horsepower")
+plt.pyplot.ylabel("count")
+plt.pyplot.title("horsepower bins")
+
+bins = np.linspace(min(df["horsepower"]), max(df["horsepower"]), 4)
+bins
+group_names = ['Low', 'Medium', 'High']
+
+df['horsepower-binned'] = pd.cut(df['horsepower'], bins, labels=group_names, include_lowest=True )
+df[['horsepower','horsepower-binned']].head(20)
+
+# Lets see the number of vehicles in each bin.
+df["horsepower-binned"].value_counts()
+
+# Lets plot the distribution of each bin.
+# %matplotlib inline
+import matplotlib as plt
+from matplotlib import pyplot
+pyplot.bar(group_names, df["horsepower-binned"].value_counts())
+
+# set x/y labels and plot title
+plt.pyplot.xlabel("horsepower")
+plt.pyplot.ylabel("count")
+plt.pyplot.title("horsepower bins")
+
+"""########################  Bins visualization """
+#Normally, a histogram is used to visualize the distribution of bins we created above.
+# %matplotlib inline
+import matplotlib as plt
+from matplotlib import pyplot
+
+a = (0,1,2)
+
+# draw historgram of attribute "horsepower" with bins = 3
+plt.pyplot.hist(df["horsepower"], bins = 3)
+
+# set x/y labels and plot title
+plt.pyplot.xlabel("horsepower")
+plt.pyplot.ylabel("count")
+plt.pyplot.title("horsepower bins")
+
+"""#########################    Indicator variable (or dummy variable)
+##        What is an indicator variable?
+An indicator variable (or dummy variable) is a numerical variable used to label categories. 
+They are called 'dummies' because the numbers themselves don't have inherent meaning.
+
+##        Why we use indicator variables?
+So we can use categorical variables for regression analysis in the later modules."""
+
+df.columns
+
+#get indicator variables and assign it to data frame "dummy_variable_1" 
+dummy_variable_1 = pd.get_dummies(df["fuel-type"])
+dummy_variable_1.head()
+#change column names for clarity FOR NEW VERSION HAPPEN AUTOMATICLY
+dummy_variable_1.rename(columns={'fuel-type-diesel':'gas', 'fuel-type-diesel':'diesel'}, inplace=True)
+
+# merge data frame "df" and "dummy_variable_1" 
+df = pd.concat([df, dummy_variable_1], axis=1)
+
+# drop original column "fuel-type" from "df"
+df.drop("fuel-type", axis = 1, inplace=True)
+df.head()
+"""
+############ Q4 #################
+As above, create indicator variable to the column of "aspiration": "std" to 0, while "turbo" to 1.
+"""
+# get indicator variables of aspiration and assign it to data frame "dummy_variable_2"
+dummy_variable_2 = pd.get_dummies(df['aspiration'])
+
+# change column names for clarity
+dummy_variable_2.rename(columns={'std':'aspiration-std', 'turbo': 'aspiration-turbo'}, inplace=True)
+
+# show first 5 instances of data frame "dummy_variable_1"
+dummy_variable_2.head()
 
 
 

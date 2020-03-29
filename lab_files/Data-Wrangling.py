@@ -237,5 +237,41 @@ plt.pyplot.xlabel("horsepower")
 plt.pyplot.ylabel("count")
 plt.pyplot.title("horsepower bins")
 
+"""#########################    Indicator variable (or dummy variable)
+##        What is an indicator variable?
+An indicator variable (or dummy variable) is a numerical variable used to label categories. 
+They are called 'dummies' because the numbers themselves don't have inherent meaning.
+
+##        Why we use indicator variables?
+So we can use categorical variables for regression analysis in the later modules."""
+
+df.columns
+
+#get indicator variables and assign it to data frame "dummy_variable_1" 
+dummy_variable_1 = pd.get_dummies(df["fuel-type"])
+dummy_variable_1.head()
+#change column names for clarity FOR NEW VERSION HAPPEN AUTOMATICLY
+dummy_variable_1.rename(columns={'fuel-type-diesel':'gas', 'fuel-type-diesel':'diesel'}, inplace=True)
+
+# merge data frame "df" and "dummy_variable_1" 
+df = pd.concat([df, dummy_variable_1], axis=1)
+
+# drop original column "fuel-type" from "df"
+df.drop("fuel-type", axis = 1, inplace=True)
+df.head()
+"""
+############ Q4 #################
+As above, create indicator variable to the column of "aspiration": "std" to 0, while "turbo" to 1.
+"""
+# get indicator variables of aspiration and assign it to data frame "dummy_variable_2"
+dummy_variable_2 = pd.get_dummies(df['aspiration'])
+
+# change column names for clarity
+dummy_variable_2.rename(columns={'std':'aspiration-std', 'turbo': 'aspiration-turbo'}, inplace=True)
+
+# show first 5 instances of data frame "dummy_variable_1"
+dummy_variable_2.head()
+
+
 
 

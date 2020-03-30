@@ -28,14 +28,16 @@ To install seaborn we use the pip which is the python package manager.
 import matplotlib.pyplot as plt
 import seaborn as sns
 #%matplotlib inline 
-#When visualizing individual variables, it is important to first understand what type of variable you are dealing with. This will help us find the right visualization method for that variable.
+#When visualizing individual variables, it is important to first understand what type of variable you are dealing with. 
+#This will help us find the right visualization method for that variable.
 
 # list the data types for each column
 print(df.dtypes)
 
-
-
-
+# for example, we can calculate the correlation between variables  of type "int64" or "float64" using the method "corr":
+df.corr()
+# Find the correlation between the following columns: bore, stroke,compression-ratio , and horsepower.
+df[['bore', 'stroke', 'compression-ratio', 'horsepower']].corr()  
 
 
 
